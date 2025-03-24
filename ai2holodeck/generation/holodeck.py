@@ -1,6 +1,7 @@
 import datetime
 import os
 from typing import Optional, Dict, Any, Tuple
+import json
 
 import compress_json
 import open_clip
@@ -151,9 +152,9 @@ class Holodeck:
         scene["proceduralParameters"]["lights"] = []
         return scene
 
-    def generate_rooms(self, scene, additional_requirements_room, used_assets=[]):
+    def generate_rooms(self, scene, additional_requirements_room, used_assets=[], scale_factor=1.0):
         self.floor_generator.used_assets = used_assets
-        rooms = self.floor_generator.generate_rooms(scene, additional_requirements_room)
+        rooms = self.floor_generator.generate_rooms(scene, additional_requirements_room, scale_factor=scale_factor)
         scene["rooms"] = rooms
         return scene
 
@@ -269,6 +270,7 @@ class Holodeck:
         use_constraint=True,
         random_selection=False,
         use_milp=False,
+        scale_factor=1.0,
     ) -> Tuple[Dict[str, Any], str]:
         # initialize scene
         query = query.replace("_", " ")
@@ -282,6 +284,7 @@ class Holodeck:
             scene,
             additional_requirements_room=self.additional_requirements_room,
             used_assets=used_assets,
+            scale_factor=scale_factor,
         )
 
         # generate walls
@@ -395,6 +398,7 @@ class Holodeck:
         save_dir=os.path.join(HOLODECK_BASE_DATA_DIR, "scenes"),
         number_of_variants=5,
         used_assets=[],
+        scale_factor=1.0,
     ):
         self.object_selector.reuse_selection = (
             False  # force the selector to retrieve different assets
@@ -423,6 +427,7 @@ class Holodeck:
                 generate_image=True,
                 generate_video=False,
                 add_time=True,
+                scale_factor=scale_factor,
             )
             variant_scenes.append(variant_scene)
             used_assets += [

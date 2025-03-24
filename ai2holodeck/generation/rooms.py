@@ -15,6 +15,7 @@ from colorama import Fore
 from langchain import PromptTemplate, OpenAI
 from shapely.geometry import LineString, Point, Polygon
 from tqdm import tqdm
+import numpy as np
 
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.constants import HOLODECK_BASE_DATA_DIR, DEBUGGING
@@ -41,7 +42,7 @@ class FloorPlanGenerator:
         self.llm = llm
         self.used_assets = []
 
-    def generate_rooms(self, scene, additional_requirements="N/A", visualize=False):
+    def generate_rooms(self, scene, additional_requirements="N/A", visualize=False, scale_factor=1.0):
         # get floor plan if not provided
         floor_plan_prompt = self.floor_plan_template.format(
             input=scene["query"], additional_requirements=additional_requirements
@@ -55,11 +56,15 @@ class FloorPlanGenerator:
         print(f"User: {floor_plan_prompt}\n")
         print(f"{Fore.GREEN}AI: Here is the floor plan:\n{raw_floor_plan}{Fore.RESET}")
 
-        rooms = self.get_plan(scene["query"], scene["raw_floor_plan"], visualize)
+        rooms, new_raw = self.get_plan(scene["query"], scene["raw_floor_plan"], visualize, scale_factor=scale_factor)
+
+        if new_raw is not None:
+            scene["raw_floor_plan"] = new_raw
+
         return rooms
 
-    def get_plan(self, query, raw_plan, visualize=False):
-        parsed_plan = self.parse_raw_plan(raw_plan)
+    def get_plan(self, query, raw_plan, visualize=False, scale_factor=1.0):
+        parsed_plan, new_raw = self.parse_raw_plan(raw_plan, scale_factor=scale_factor)
 
         # select materials
         all_designs = []
@@ -80,12 +85,41 @@ class FloorPlanGenerator:
         if visualize:
             self.visualize_floor_plan(query, parsed_plan)
 
-        return parsed_plan
+        return parsed_plan, new_raw
 
-    def parse_raw_plan(self, raw_plan):
+    def parse_raw_plan(self, raw_plan, scale_factor=1.0):
         parsed_plan = []
         room_types = []
         plans = [plan.lower() for plan in raw_plan.split("\n") if "|" in plan]
+
+        do_scale = not np.isclose(scale_factor, 1.0)
+        all_vertices = {} if do_scale else None
+
+        if do_scale:
+            order = []
+            for i, plan in enumerate(plans):
+                room_type, floor_design, wall_design, vertices = plan.split("|")
+                room_type = room_type.strip().replace("'", "")  # remove single quote
+
+                if room_type in room_types:
+                    room_type += f"-{i}"
+
+                vertices = ast.literal_eval(vertices.strip())
+                # change to float
+                vertices = [(float(vertex[0]), float(vertex[1])) for vertex in vertices]
+                all_vertices[room_type] = vertices
+                order.append(room_type)
+
+            vertices_array = np.array(np.concatenate(list(all_vertices.values()), axis=0))
+            vertices_min = np.min(vertices_array, axis=0)
+            # Keep the min coordinate after scaling:
+            vertices_scaled = np.round(vertices_array * scale_factor + (1 - scale_factor) * vertices_min).astype(int)
+            first_index = 0
+            for room_type in order:
+                nverts = len(all_vertices[room_type])
+                all_vertices[room_type] = [(float(v[0]), float(v[1])) for v in vertices_scaled[first_index: first_index + nverts]]
+                first_index += nverts
+
         for i, plan in enumerate(plans):
             room_type, floor_design, wall_design, vertices = plan.split("|")
             room_type = room_type.strip().replace("'", "")  # remove single quote
@@ -96,9 +130,13 @@ class FloorPlanGenerator:
 
             floor_design = floor_design.strip()
             wall_design = wall_design.strip()
-            vertices = ast.literal_eval(vertices.strip())
-            # change to float
-            vertices = [(float(vertex[0]), float(vertex[1])) for vertex in vertices]
+
+            if do_scale:
+                vertices = all_vertices[room_type]
+            else:
+                vertices = ast.literal_eval(vertices.strip())
+                # change to float
+                vertices = [(float(vertex[0]), float(vertex[1])) for vertex in vertices]
 
             current_plan = copy.deepcopy(self.json_template)
             current_plan["id"] = room_type
@@ -130,7 +168,6 @@ class FloorPlanGenerator:
 
             if DEBUGGING:
                 import matplotlib.pyplot as plt
-                import numpy as np
 
                 colors = plt.cm.rainbow(np.linspace(0, 1, len(parsed_plan)))
                 for room in parsed_plan:
@@ -143,7 +180,7 @@ class FloorPlanGenerator:
             raise ValueError(msg)
         else:
             print(f"{Fore.GREEN}AI: {msg}{Fore.RESET}")
-            return parsed_plan
+            return parsed_plan, self.parsed2raw(parsed_plan) if do_scale else None
 
     def vertices2xyz(self, vertices):
         sort_vertices = self.sort_vertices(vertices)

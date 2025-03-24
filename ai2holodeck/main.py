@@ -65,6 +65,7 @@ def generate_single_scene(args):
             use_constraint=ast.literal_eval(args.use_constraint),
             use_milp=ast.literal_eval(args.use_milp),
             random_selection=ast.literal_eval(args.random_selection),
+            scale_factor=args.scale_factor,
         )
     except:
         print(
@@ -177,6 +178,12 @@ if __name__ == "__main__":
         "--single_room",
         help="Whether to generate a single room scene.",
         default="False",
+    )
+    parser.add_argument(
+        "--scale_factor",
+        help="scale factor for LLM-generated floor plan (vertices will be rounded to nearest integer)",
+        type=float,
+        default=1.0,
     )
 
     args = parser.parse_args()
