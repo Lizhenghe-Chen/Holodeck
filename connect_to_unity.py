@@ -28,7 +28,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 scene = compress_json.load(args.scene)
-
+print("Run Unity play now")
 controller = Controller(
     commit_id=THOR_COMMIT_ID,
     start_unity=False,
