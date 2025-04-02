@@ -154,7 +154,7 @@ class ObjectSelector:
         print(f"\n{Fore.GREEN}AI: Selecting objects for {room_type}...{Fore.RESET}\n")
 
         result = {}
-        room_size_str = f"{int(room2size[room_type][0])*100}cm in length, {int(room2size[room_type][1])*100}cm in width, {int(room2size[room_type][2])*100}cm in height"
+        room_size_str = f"{int(room2size[room_type][0]*100)}cm in length, {int(room2size[room_type][2]*100)}cm in width, {int(room2size[room_type][1]*100)}cm in height"
 
         prompt_1 = (
             self.object_selection_template_1.replace("INPUT", scene["query"])
