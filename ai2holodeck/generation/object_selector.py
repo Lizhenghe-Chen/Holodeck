@@ -12,6 +12,7 @@ import torch.nn.functional as F
 from colorama import Fore
 from langchain import PromptTemplate, OpenAI
 from shapely import Polygon
+from langchain.schema import HumanMessage
 
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.generation.floor_objects import DFS_Solver_Floor
@@ -163,7 +164,8 @@ class ObjectSelector:
             .replace("REQUIREMENTS", additional_requirements)
         )
 
-        output_1 = self.llm(prompt_1).lower()
+        # output_1 = self.llm(prompt_1).lower()
+        output_1 = self.llm([HumanMessage(content=prompt_1)]).content.lower()
         plan_1 = self.extract_json(output_1)
 
         if plan_1 is None:

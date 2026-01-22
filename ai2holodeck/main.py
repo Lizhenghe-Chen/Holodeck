@@ -6,8 +6,8 @@ from argparse import ArgumentParser
 import compress_json
 from tqdm import tqdm
 
-from ai2holodeck.constants import HOLODECK_BASE_DATA_DIR, OBJATHOR_ASSETS_DIR
-from ai2holodeck.generation.holodeck import Holodeck
+from constants import HOLODECK_BASE_DATA_DIR, OBJATHOR_ASSETS_DIR
+from generation.holodeck import Holodeck
 
 
 def str2bool(v: str):
@@ -137,6 +137,16 @@ if __name__ == "__main__":
         default=None,
     )
     parser.add_argument(
+        "--openai_api_base",
+        help="Optional custom OpenAI-compatible base URL (e.g., Kimi/Moonshot: https://api.moonshot.cn/v1). If none given, will attempt to read OPENAI_API_BASE env variable.",
+        default=None,
+    )
+    parser.add_argument(
+        "--llm_model_name",
+        help="Optional override for LLM model name (e.g., moonshot-v1-32k). Defaults to internal constant if not provided.",
+        default=None,
+    )
+    parser.add_argument(
         "--save_dir", help="Directory to save scene to.", default="./data/scenes"
     )
     parser.add_argument(
@@ -187,9 +197,14 @@ if __name__ == "__main__":
     if args.openai_org is None:
         args.openai_org = os.environ.get("OPENAI_ORG")
 
+    if args.openai_api_base is None:
+        args.openai_api_base = os.environ.get("OPENAI_API_BASE")
+
     args.model = Holodeck(
         openai_api_key=args.openai_api_key,
         openai_org=args.openai_org,
+        openai_api_base=args.openai_api_base,
+        model_name=args.llm_model_name,
         objaverse_asset_dir=OBJATHOR_ASSETS_DIR,
         single_room=ast.literal_eval(args.single_room),
     )

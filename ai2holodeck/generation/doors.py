@@ -10,7 +10,7 @@ from PIL import Image
 from colorama import Fore
 from langchain import PromptTemplate, OpenAI
 from tqdm import tqdm
-
+from langchain.schema import HumanMessage
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.constants import HOLODECK_BASE_DATA_DIR
 
@@ -97,7 +97,9 @@ class DoorGenerator:
 
         # generate raw doorway plan if not exist
         if "raw_doorway_plan" not in scene:
-            raw_doorway_plan = self.llm(doorway_prompt)
+            # raw_doorway_plan = self.llm(doorway_prompt)
+            raw_doorway_plan = self.llm([HumanMessage(content=doorway_prompt)]).content
+
         else:
             raw_doorway_plan = scene["raw_doorway_plan"]
 

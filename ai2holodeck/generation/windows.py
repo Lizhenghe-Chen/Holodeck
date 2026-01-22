@@ -8,7 +8,7 @@ import compress_json
 import numpy as np
 from colorama import Fore
 from langchain import PromptTemplate, OpenAI
-
+from langchain.schema import HumanMessage
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.constants import HOLODECK_BASE_DATA_DIR
 
@@ -55,7 +55,8 @@ class WindowGenerator:
         )
 
         if "raw_window_plan" not in scene:
-            raw_window_plan = self.llm(window_prompt)
+            # raw_window_plan = self.llm(window_prompt)
+            raw_window_plan = self.llm([HumanMessage(content=window_prompt)]).content
         else:
             raw_window_plan = scene["raw_window_plan"]
 

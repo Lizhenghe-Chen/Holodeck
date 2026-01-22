@@ -7,7 +7,7 @@ import open_clip
 from langchain.llms import OpenAI
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
-
+from langchain.chat_models import ChatOpenAI
 from ai2holodeck.constants import (
     HOLODECK_BASE_DATA_DIR,
     OBJATHOR_VERSIONED_DIR,
@@ -58,6 +58,8 @@ class Holodeck:
         self,
         openai_api_key: str,
         openai_org: Optional[str],
+        openai_api_base: Optional[str],
+        model_name: Optional[str],
         objaverse_asset_dir: str,
         single_room,
     ):
@@ -67,10 +69,11 @@ class Holodeck:
             os.environ["OPENAI_ORG"] = openai_org
 
         # initialize llm
-        self.llm = OpenAI(
-            model_name=LLM_MODEL_NAME,
-            max_tokens=2048,
+        self.llm = ChatOpenAI(
+            model_name=model_name if model_name is not None else LLM_MODEL_NAME,
+            max_tokens=4096,
             openai_api_key=openai_api_key,
+            openai_api_base=openai_api_base,
         )
 
         # initialize CLIP

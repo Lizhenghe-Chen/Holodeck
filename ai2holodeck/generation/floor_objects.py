@@ -14,6 +14,7 @@ from langchain import PromptTemplate, OpenAI
 from rtree import index
 from scipy.interpolate import interp1d
 from shapely.geometry import Polygon, Point, box, LineString
+from langchain.schema import HumanMessage
 
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.generation.milp_utils import *
@@ -104,7 +105,8 @@ class FloorObjectGenerator:
             )
 
             if self.constraint_type == "llm":
-                constraint_plan = self.llm(constraint_prompt)
+                # constraint_plan = self.llm(constraint_prompt)
+                constraint_plan = self.llm(HumanMessage(content=constraint_prompt))
             elif self.constraint_type in ["middle", "edge"]:
                 constraint_plan = ""
                 for object_name in object_names:
@@ -171,7 +173,8 @@ class FloorObjectGenerator:
             ]
             all_is_placed = False
             while not all_is_placed:
-                completion_text = self.llm(baseline_prompt)
+                # completion_text = self.llm(baseline_prompt)
+                completion_text = self.llm(HumanMessage(content=baseline_prompt))
                 try:
                     completion_text = re.findall(
                         r"```(.*?)```", completion_text, re.DOTALL

@@ -9,7 +9,7 @@ import numpy as np
 from langchain import PromptTemplate, OpenAI
 from shapely.geometry import Polygon, box, Point, LineString
 from shapely.ops import substring
-
+from langchain.schema import HumanMessage
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.generation.objaverse_retriever import ObjathorRetriever
 from ai2holodeck.generation.utils import get_bbox_dims
@@ -112,7 +112,10 @@ class WallObjectGenerator:
             wall_objects=", ".join(wall_object_names),
         )
         if self.constraint_type == "llm" and use_constraint:
-            constraint_plan = self.llm(constraints_prompt)
+            # constraint_plan = self.llm(constraints_prompt)
+            constraint_plan = self.llm(
+                [HumanMessage(content=constraints_prompt)]
+            ).content
         else:
             constraint_plan = ""
             for object_name in wall_object_names:
