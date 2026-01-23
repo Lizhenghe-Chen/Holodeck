@@ -170,7 +170,7 @@ class ObjectSelector:
 
         if plan_1 is None:
             print(f"Error while extracting the JSON for {room_type}.")
-            return result
+            return room_type, result
 
         (
             floor_objects,
@@ -203,7 +203,7 @@ class ObjectSelector:
                 object_selection_1=output_1,
                 room=room_type,
             )
-            output_2 = self.llm(prompt_2).lower()
+            output_2 = self.llm([HumanMessage(content=prompt_2)]).content.lower()
             plan_2 = self.extract_json(output_2)
 
             if plan_2 is None:

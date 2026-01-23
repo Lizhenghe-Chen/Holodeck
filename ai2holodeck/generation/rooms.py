@@ -87,8 +87,11 @@ class FloorPlanGenerator:
     def parse_raw_plan(self, raw_plan):
         parsed_plan = []
         room_types = []
-        plans = [plan.lower() for plan in raw_plan.split("\n") if "|" in plan]
+        # Filter for lines with exactly 3 pipe separators (4 fields)
+        plans = [plan.lower() for plan in raw_plan.split("\n") if plan.count("|") == 3]
         for i, plan in enumerate(plans):
+            # Remove markdown formatting (** at start/end)
+            plan = plan.strip().strip('*')
             room_type, floor_design, wall_design, vertices = plan.split("|")
             room_type = room_type.strip().replace("'", "")  # remove single quote
 
@@ -98,7 +101,8 @@ class FloorPlanGenerator:
 
             floor_design = floor_design.strip()
             wall_design = wall_design.strip()
-            vertices = ast.literal_eval(vertices.strip())
+            vertices = vertices.strip().strip('*')  # Remove any trailing markdown
+            vertices = ast.literal_eval(vertices)
             # change to float
             vertices = [(float(vertex[0]), float(vertex[1])) for vertex in vertices]
 

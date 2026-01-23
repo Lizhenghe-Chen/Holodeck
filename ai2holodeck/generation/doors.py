@@ -223,6 +223,13 @@ class DoorGenerator:
                     and "exterior" not in wall["id"]
                     and len(wall["connected_rooms"]) != 0
                 ]
+                
+                if not current_walls:
+                    print(
+                        f"{Fore.YELLOW}Warning: No available walls found for room {room}, skipping auto-door generation.{Fore.RESET}"
+                    )
+                    continue
+                
                 widest_wall = max(current_walls, key=lambda x: x["width"])
 
                 room_to_connect = widest_wall["connected_rooms"][0]["roomId"]

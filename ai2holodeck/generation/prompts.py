@@ -12,7 +12,11 @@ Here are some guidelines for you:
 
 Now, I need a design for {input}.
 Additional requirements: {additional_requirements}.
-Your response should be direct and without additional text at the beginning or end."""
+
+IMPORTANT: Your response must follow the exact format shown in the examples above. Each room must be on a single line with exactly this structure:
+room_name | floor_material, floor_texture | wall_material, wall_texture | [(x1, y1), (x2, y2), (x3, y3), (x4, y4)]
+
+Do not add any headers, descriptions, or additional formatting. Output only the room definitions in the format shown."""
 
 
 wall_height_prompt = """I am now designing {input}. Please help me decide the wall height in meters.
@@ -30,6 +34,8 @@ The design under consideration is {input}, which includes these rooms: {rooms}. 
 {room_sizes}
 Certain pairs of rooms share a wall: {room_pairs}. There must be a door to the exterior.
 Adhere to these additional requirements: {additional_requirements}.
+
+IMPORTANT: You must use ONLY the room names listed above in the "rooms" section. Do not use generic room names like "living room" or "kitchen" - use the exact names provided.
 Provide your response succinctly, without additional text at the beginning or end."""
 
 

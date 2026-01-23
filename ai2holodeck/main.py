@@ -8,8 +8,7 @@ from tqdm import tqdm
 
 from constants import HOLODECK_BASE_DATA_DIR, OBJATHOR_ASSETS_DIR
 from generation.holodeck import Holodeck
-
-
+import openai
 def str2bool(v: str):
     v = v.lower().strip()
     if v in ("yes", "true", "t", "y", "1"):
@@ -191,14 +190,23 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Resolve API credentials and base URL from CLI or environment
     if args.openai_api_key is None:
         args.openai_api_key = os.environ.get("OPENAI_API_KEY")
-
     if args.openai_org is None:
         args.openai_org = os.environ.get("OPENAI_ORG")
-
     if args.openai_api_base is None:
         args.openai_api_base = os.environ.get("OPENAI_API_BASE")
+
+    # Initialize OpenAI client globals so multiprocessing workers inherit them
+    if args.openai_api_key:
+        openai.api_key = args.openai_api_key
+        os.environ["OPENAI_API_KEY"] = args.openai_api_key
+    if args.openai_api_base:
+        openai.api_base = args.openai_api_base
+        os.environ["OPENAI_API_BASE"] = args.openai_api_base
+    if args.openai_org:
+        os.environ["OPENAI_ORG"] = args.openai_org
 
     args.model = Holodeck(
         openai_api_key=args.openai_api_key,

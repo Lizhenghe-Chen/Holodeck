@@ -106,7 +106,7 @@ class FloorObjectGenerator:
 
             if self.constraint_type == "llm":
                 # constraint_plan = self.llm(constraint_prompt)
-                constraint_plan = self.llm(HumanMessage(content=constraint_prompt))
+                constraint_plan = self.llm([HumanMessage(content=constraint_prompt)]).content
             elif self.constraint_type in ["middle", "edge"]:
                 constraint_plan = ""
                 for object_name in object_names:
@@ -174,7 +174,7 @@ class FloorObjectGenerator:
             all_is_placed = False
             while not all_is_placed:
                 # completion_text = self.llm(baseline_prompt)
-                completion_text = self.llm(HumanMessage(content=baseline_prompt))
+                completion_text = self.llm([HumanMessage(content=baseline_prompt)]).content
                 try:
                     completion_text = re.findall(
                         r"```(.*?)```", completion_text, re.DOTALL
