@@ -198,6 +198,10 @@ if __name__ == "__main__":
     if args.openai_api_base is None:
         args.openai_api_base = os.environ.get("OPENAI_API_BASE")
 
+    # Add protocol to API base URL if missing
+    if args.openai_api_base and not args.openai_api_base.startswith(("http://", "https://")):
+        args.openai_api_base = "http://" + args.openai_api_base
+
     # Initialize OpenAI client globals so multiprocessing workers inherit them
     if args.openai_api_key:
         openai.api_key = args.openai_api_key
