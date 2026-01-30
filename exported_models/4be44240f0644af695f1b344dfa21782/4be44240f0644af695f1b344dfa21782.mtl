@@ -1,0 +1,9 @@
+# Material for 4be44240f0644af695f1b344dfa21782
+newmtl 4be44240f0644af695f1b344dfa21782_material
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ns 10.0
+map_Kd albedo.jpg
+map_Bump normal.jpg
+map_Ke emission.jpg

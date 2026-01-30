@@ -16,9 +16,13 @@ parser = ArgumentParser()
 parser.add_argument(
     "--scene",
     help="the directory of the scene to be generated",
-    default=os.path.join(
-        HOLODECK_BASE_DATA_DIR, "/scenes/a_living_room/a_living_room.json"
-    ),
+    # default=os.path.join(
+    #     HOLODECK_BASE_DATA_DIR, "data/scenes/a_high_school_building_with_si-2026-01-23-16-22-04-038491/a_high_school_building_with_si.json"
+    # ),
+     # the relative path to the scene json file in current repo
+    # default="./data/scenes/a_high_school_building_with_si-2026-01-23-16-22-04-038491/a_high_school_building_with_si.json"
+    # default="./data/scenes/a_living_room-2026-01-23-16-12-22-527091/a_living_room.json"
+    default="./data/scenes/一个有很多植物的房间-2026-01-29-15-54-51-204841/一个有很多植物的房间.json"
 )
 parser.add_argument(
     "--asset_dir",

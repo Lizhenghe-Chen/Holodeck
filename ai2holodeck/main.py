@@ -151,7 +151,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--generate_image",
         help="Whether to generate an image of the scene.",
-        default="True",
+        default="False",
     )
     parser.add_argument(
         "--generate_video",
