@@ -1,100 +1,79 @@
--e git+https://github.com/allenai/Holodeck.git@362b8ed948b867b69a72f1f9491f4caa88419bfc#egg=ai2holodeck
+-e git+https://github.com/Lizhenghe-Chen/Holodeck.git@f0a80c312fb2ee2be57bc3b46065df404f28c941#egg=ai2holodeck
 ai2thor==0+8524eadda94df0ab2dbb2ef5a577e4d37c712897
 aiohappyeyeballs==2.6.1
 aiohttp==3.13.3
 aiosignal==1.4.0
+anyio==4.12.1
 async-timeout==4.0.3
 attrs==25.4.0
 aws-requests-auth==0.4.3
-backports.zstd @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_backports.zstd_1767044984/work
 black==26.1.0
-botocore==1.42.32
-Brotli @ file:///home/conda/feedstock_root/build_artifacts/brotli-split_1764016952863/work
+botocore==1.42.40
+brotlicffi @ file:///opt/miniconda3/conda-bld/brotlicffi_1764961161728/work
 cchardet==2.1.7
-certifi @ file:///home/conda/feedstock_root/build_artifacts/certifi_1767500808759/work/certifi
-cffi==2.0.0
-charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1760437218288/work
+certifi @ file:///Users/ec2-user/croot/certifi_1767659142737/work/certifi
+cffi @ file:///opt/miniconda3/conda-bld/cffi_1761832772717/work
+charset-normalizer @ file:///opt/miniconda3/conda-bld/charset-normalizer_1761744841364/work
 clarabel==0.11.1
 click==8.3.1
 colorama==0.4.6
 compress-pickle==2.1.0
 compress_json==1.1.1
 contourpy==1.3.2
-cryptography==46.0.3
-cuda-bindings==12.9.4
-cuda-pathfinder==1.3.3
+cryptography==46.0.4
 cvxpy==1.7.5
 cycler==0.12.1
 dataclasses-json==0.5.14
 decorator==4.4.2
 editdistance==0.8.1
-filelock @ file:///home/conda/feedstock_root/build_artifacts/filelock_1768022204021/work
+exceptiongroup==1.3.1
+filelock @ file:///Users/ec2-user/croot/filelock_1769440497507/work
 Flask==2.0.1
 fonttools==4.61.1
 frozenlist==1.8.0
 fsspec==2026.1.0
 ftfy==6.3.1
-gmpy2 @ file:///home/conda/feedstock_root/build_artifacts/gmpy2_1762946744175/work
+gmpy2 @ file:///opt/miniconda3/conda-bld/gmpy2_1764747893574/work
 GPUtil==1.4.0
-greenlet==3.3.0
 gurobipy==10.0.3
-h2 @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_h2_1756364871/work
+h11==0.16.0
 hf-xet==1.2.0
-hpack @ file:///home/conda/feedstock_root/build_artifacts/hpack_1737618293087/work
-huggingface-hub==0.21.4
-hyperframe @ file:///home/conda/feedstock_root/build_artifacts/hyperframe_1737618333194/work
-idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1760286409563/work
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==1.3.7
+idna @ file:///opt/miniconda3/conda-bld/idna_1761912002779/work
 ImageIO==2.37.2
 imageio-ffmpeg==0.6.0
 itsdangerous==2.2.0
-Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_jinja2_1764517220/work
-jmespath==1.0.1
+Jinja2 @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_2cnn4kenrm/croot/jinja2_1741710859444/work
+jmespath==1.1.0
 joblib==1.5.3
 kiwisolver==1.4.9
 langchain==0.0.171
 lazy_loader==0.4
 loguru==0.7.3
-MarkupSafe @ file:///home/conda/feedstock_root/build_artifacts/markupsafe_1759055168201/work
+MarkupSafe @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_1f_uj4vxik/croot/markupsafe_1738584045311/work
 marshmallow==3.26.2
 matplotlib==3.10.8
 moviepy==1.0.3
-mpmath @ file:///home/conda/feedstock_root/build_artifacts/mpmath_1733302684489/work
+mpmath @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_17iu6a8a3m/croot/mpmath_1690848269369/work
 msgpack==1.1.2
-multidict==6.7.0
+multidict==6.7.1
 mypy_extensions==1.1.0
-networkx @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_networkx_1731521053/work
+networkx @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_e6lt1dcyid/croot/networkx_1737040482044/work
 nltk==3.9.2
 numexpr==2.14.1
 numpy==1.26.1
-nvidia-cublas-cu11==11.10.3.66
-nvidia-cublas-cu12==12.8.4.1
-nvidia-cuda-cupti-cu12==12.8.90
-nvidia-cuda-nvrtc-cu11==11.7.99
-nvidia-cuda-nvrtc-cu12==12.8.93
-nvidia-cuda-runtime-cu11==11.7.99
-nvidia-cuda-runtime-cu12==12.8.90
-nvidia-cudnn-cu11==8.5.0.96
-nvidia-cudnn-cu12==9.10.2.21
-nvidia-cufft-cu12==11.3.3.83
-nvidia-cufile-cu12==1.13.1.3
-nvidia-curand-cu12==10.3.9.90
-nvidia-cusolver-cu12==11.7.3.90
-nvidia-cusparse-cu12==12.5.8.93
-nvidia-cusparselt-cu12==0.7.1
-nvidia-nccl-cu12==2.27.5
-nvidia-nvjitlink-cu12==12.8.93
-nvidia-nvshmem-cu12==3.4.5
-nvidia-nvtx-cu12==12.8.90
 objathor==0.0.8
 objaverse==0.1.7
 open_clip_torch==2.32.0
 openai==0.27.6
 openapi-schema-pydantic==1.2.4
-opencv-python==4.10.0.84
-osqp==1.0.5
-packaging==26.0
+opencv-python==4.13.0.90
+osqp==1.1.0
+packaging @ file:///opt/miniconda3/conda-bld/packaging_1761049079158/work
 pandas==2.3.3
-pathspec==1.0.3
+pathspec==1.0.4
 pillow==11.3.0
 platformdirs==4.5.1
 prior==1.0.3
@@ -103,52 +82,53 @@ proglog==0.1.12
 progressbar2==4.5.0
 propcache==0.4.1
 pyarrow==23.0.0
-pycparser==3.0
+pycparser @ file:///opt/miniconda3/conda-bld/pycparser_1757496094255/work
 pydantic==1.10.26
 PyGithub==2.8.1
-PyJWT==2.10.1
+PyJWT==2.11.0
 PyNaCl==1.6.2
 pyparsing==3.3.2
-PySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_1733217236728/work
+PySocks @ file:///opt/miniconda3/conda-bld/pysocks_1761753011241/work
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.1
-python-sat==1.8.dev27
+python-sat==1.8.dev28
 python-utils==3.9.1
 python-xlib==0.33
-pytokens==0.4.0
+pytokens==0.4.1
 pytz==2025.2
-PyYAML @ file:///home/conda/feedstock_root/build_artifacts/pyyaml_1758891829620/work
+PyYAML @ file:///opt/miniconda3/conda-bld/pyyaml_1763465492983/work
 regex==2026.1.15
-requests @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_requests_1766926974/work
+requests @ file:///opt/miniconda3/conda-bld/requests_1762359594551/work
 rtree==1.4.1
 safetensors==0.7.0
 scikit-image==0.25.2
 scikit-learn==1.7.2
 scipy==1.15.3
 scs==3.2.11
-sentence-transformers==2.2.2
+sentence-transformers==5.2.2
 sentencepiece==0.2.1
 shapely==2.1.2
+shellingham==1.5.4
 six==1.17.0
 SQLAlchemy==2.0.46
-sympy @ file:///home/conda/feedstock_root/build_artifacts/sympy_1745946051654/work
+sympy @ file:///opt/miniconda3/conda-bld/sympy_1764763032713/work
 tenacity==8.5.0
 threadpoolctl==3.6.0
 tifffile==2025.5.10
 timm==1.0.24
-tokenizers==0.13.3
+tokenizers==0.22.2
 tomli==2.4.0
 torch==1.13.1
-torchaudio==2.1.1
+torchaudio==2.10.0
 torchvision==0.14.1
-tqdm==4.67.1
-transformers==4.30.0
+tqdm==4.67.2
+transformers==5.0.0
 trimesh==4.11.1
-triton==3.6.0
+typer-slim==0.21.1
 typing-inspect==0.9.0
-typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_typing_extensions_1756220668/work
+typing_extensions @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_dffmcwqo6o/croot/typing_extensions_1756281471323/work
 tzdata==2025.3
-urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1767817748113/work
-wcwidth==0.3.0
+urllib3 @ file:///Users/ec2-user/croot/urllib3_1767810408374/work
+wcwidth==0.5.3
 Werkzeug==2.0.1
 yarl==1.22.0

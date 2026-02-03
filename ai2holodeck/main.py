@@ -9,6 +9,8 @@ from tqdm import tqdm
 from constants import HOLODECK_BASE_DATA_DIR, OBJATHOR_ASSETS_DIR
 from generation.holodeck import Holodeck
 import openai
+
+
 def str2bool(v: str):
     v = v.lower().strip()
     if v in ("yes", "true", "t", "y", "1"):
@@ -112,7 +114,9 @@ if __name__ == "__main__":
         default="generate_single_scene",
     )
     parser.add_argument(
-        "--query", help="Query to generate scene from.", default="a living room with alot of wooden tables"
+        "--query",
+        help="Query to generate scene from.",
+        default="a room with  windows ",
     )
     parser.add_argument(
         "--query_file", help="File to load queries from.", default="./data/queries.txt"
@@ -199,7 +203,9 @@ if __name__ == "__main__":
         args.openai_api_base = os.environ.get("OPENAI_API_BASE")
 
     # Add protocol to API base URL if missing
-    if args.openai_api_base and not args.openai_api_base.startswith(("http://", "https://")):
+    if args.openai_api_base and not args.openai_api_base.startswith(
+        ("http://", "https://")
+    ):
         args.openai_api_base = "http://" + args.openai_api_base
 
     # Initialize OpenAI client globals so multiprocessing workers inherit them
