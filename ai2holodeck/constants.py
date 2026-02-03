@@ -24,7 +24,7 @@ HOLODECK_THOR_ANNOTATIONS_PATH = os.path.join(
     HOLODECK_BASE_DATA_DIR, "thor_object_data", "annotations.json.gz"
 )
 
-if ASSETS_VERSION > "2030_09_23":
+if ASSETS_VERSION > "2023_09_23":
     THOR_COMMIT_ID = "8524eadda94df0ab2dbb2ef5a577e4d37c712897"
 else:
     THOR_COMMIT_ID = "3213d486cd09bcbafce33561997355983bdf8d1a"

@@ -52,8 +52,8 @@ class ObjectSelector:
         self.floor_capacity_ratio = 0.4
         self.wall_capacity_ratio = 0.5
         self.object_size_tolerance = 0.8
-        self.similarity_threshold_floor = 10 # need to be tuned
-        self.similarity_threshold_wall = 10  # need to be tuned
+        self.similarity_threshold_floor = 30 # need to be tuned
+        self.similarity_threshold_wall = 30  # need to be tuned
         self.thin_threshold = 3
         self.used_assets = []
         self.consider_size = True
