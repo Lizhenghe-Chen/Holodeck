@@ -2,16 +2,24 @@
 """
 将 OBJathor 的 .pkl.gz 模型文件导出为标准的 .obj 格式
 用法:
-    python export_model.py --asset_id 0a0a8274693445a6b533dce7f97f747c --output_dir ./exported_models
-    python export_model.py --asset_path /path/to/asset.pkl.gz --output_dir ./exported_models
+    在文件顶部设置 ASSET_ID 或 ASSET_PATH，然后直接运行脚本
 """
 import os
 import shutil
-from argparse import ArgumentParser
 from pathlib import Path
-import trimesh
-import numpy as np
 import compress_pickle
+
+# =====================
+# 配置常量（按需修改）
+# =====================
+# 单个资产：二选一（优先使用 ASSET_PATH）
+ASSET_ID = (
+    "0a0a8274693445a6b533dce7f97f747c"  # 例如: "0a0a8274693445a6b533dce7f97f747c"
+)
+
+# 路径配置
+ASSETS_DIR = ""
+OUTPUT_DIR = ""
 
 
 def export_obj(pkl_data, output_path, asset_id):
@@ -125,79 +133,22 @@ def export_asset(asset_path, output_dir):
     # 复制纹理
     textures = copy_textures(asset_dir, output_path)
 
-    print(f"✓ {asset_id}: {obj_path}")
+    print(f"✓ {asset_id} -> {obj_path}")
 
     return output_path
 
 
-def batch_export(assets_dir, output_dir, limit=None):
-    """批量导出资产"""
-    # 查找所有.pkl.gz文件
-    pkl_files = []
-    for root, dirs, files in os.walk(assets_dir):
-        for file in files:
-            if file.endswith(".pkl.gz"):
-                pkl_files.append(os.path.join(root, file))
-
-    print(f"找到 {len(pkl_files)} 个资产")
-
-    if limit:
-        pkl_files = pkl_files[:limit]
-
-    # 批量导出
-    success = 0
-    for pkl_file in pkl_files:
-        try:
-            export_asset(pkl_file, output_dir)
-            success += 1
-        except Exception as e:
-            asset_id = Path(pkl_file).stem.replace(".pkl", "")
-            print(f"✗ {asset_id}: {e}")
-
-    print(f"完成: {success}/{len(pkl_files)}")
-
-
 if __name__ == "__main__":
-    parser = ArgumentParser(description="将 OBJathor .pkl.gz 模型导出为 .obj 格式")
-
-    parser.add_argument(
-        "--asset_id",
-        help="资产ID（例如: 0a0a8274693445a6b533dce7f97f747c）",
-        default=None,
-    )
-    parser.add_argument(
-        "--asset_path", help="直接指定 .pkl.gz 文件的完整路径", default=None
-    )
-    parser.add_argument(
-        "--assets_dir",
-        help="资产根目录（用于批量导出）",
-        default="/Volumes/DoggyChen/objathor-assets/2023_09_23/assets",
-    )
-    parser.add_argument("--output_dir", help="输出目录", default="/Volumes/DoggyChen/GitProjects/Gen Scene 2.0/Assets/export_models")
-    parser.add_argument("--batch", help="批量导出所有资产", action="store_true")
-    parser.add_argument("--limit", help="批量导出时限制数量", type=int, default=None)
-
-    args = parser.parse_args()
-
     # 创建输出目录
-    os.makedirs(args.output_dir, exist_ok=True)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    if args.batch:
-        # 批量导出
-        batch_export(args.assets_dir, args.output_dir, args.limit)
-    elif args.asset_path:
-        # 导出单个资产（通过路径）
-        export_asset(args.asset_path, args.output_dir)
-    elif args.asset_id:
+    if ASSET_ID:
         # 导出单个资产（通过ID）
-        asset_path = os.path.join(
-            args.assets_dir, args.asset_id, f"{args.asset_id}.pkl.gz"
-        )
+        asset_path = os.path.join(ASSETS_DIR, ASSET_ID, f"{ASSET_ID}.pkl.gz")
         if not os.path.exists(asset_path):
             print(f"错误: 找不到资产文件 {asset_path}")
             exit(1)
-        export_asset(asset_path, args.output_dir)
+        export_asset(asset_path, OUTPUT_DIR)
     else:
-        print("错误: 请指定 --asset_id、--asset_path 或 --batch")
-        parser.print_help()
+        print("错误: 请设置 ASSET_ID 变量以导出资产。")
         exit(1)

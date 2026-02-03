@@ -22,7 +22,7 @@ parser.add_argument(
      # the relative path to the scene json file in current repo
     # default="./data/scenes/a_high_school_building_with_si-2026-01-23-16-22-04-038491/a_high_school_building_with_si.json"
     # default="./data/scenes/a_living_room-2026-01-23-16-12-22-527091/a_living_room.json"
-    default="./data/scenes/一个有很多植物的房间-2026-01-29-15-54-51-204841/一个有很多植物的房间.json"
+    default="./data/scenes/一个只有桌子的房间-2026-02-02-17-33-43-559810/一个只有桌子的房间.json"
 )
 parser.add_argument(
     "--asset_dir",

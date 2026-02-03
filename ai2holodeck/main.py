@@ -112,7 +112,7 @@ if __name__ == "__main__":
         default="generate_single_scene",
     )
     parser.add_argument(
-        "--query", help="Query to generate scene from.", default="a living room"
+        "--query", help="Query to generate scene from.", default="a living room with alot of wooden tables"
     )
     parser.add_argument(
         "--query_file", help="File to load queries from.", default="./data/queries.txt"
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--openai_api_key",
         help="OpenAI API key. If none given, will attempt to read this from the OPENAI_API_KEY env variable.",
-        default=None,
+        default="None",
     )
     parser.add_argument(
         "--openai_org",
@@ -138,12 +138,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--openai_api_base",
         help="Optional custom OpenAI-compatible base URL (e.g., Kimi/Moonshot: https://api.moonshot.cn/v1). If none given, will attempt to read OPENAI_API_BASE env variable.",
-        default=None,
+        default="10.120.47.138:8000/v1",
     )
     parser.add_argument(
-        "--llm_model_name",
+        "--model_name",
         help="Optional override for LLM model name (e.g., moonshot-v1-32k). Defaults to internal constant if not provided.",
-        default=None,
+        default="./Qwen3-VL-8B-Instruct",
     )
     parser.add_argument(
         "--save_dir", help="Directory to save scene to.", default="./data/scenes"
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--generate_image",
         help="Whether to generate an image of the scene.",
-        default="False",
+        default="True",
     )
     parser.add_argument(
         "--generate_video",
@@ -216,7 +216,7 @@ if __name__ == "__main__":
         openai_api_key=args.openai_api_key,
         openai_org=args.openai_org,
         openai_api_base=args.openai_api_base,
-        model_name=args.llm_model_name,
+        model_name=args.model_name,
         objaverse_asset_dir=OBJATHOR_ASSETS_DIR,
         single_room=ast.literal_eval(args.single_room),
     )

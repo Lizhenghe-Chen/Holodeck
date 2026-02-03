@@ -3,8 +3,8 @@ from pathlib import Path
 
 ABS_PATH_OF_HOLODECK = os.path.abspath(os.path.dirname(Path(__file__)))
 
-ASSETS_VERSION = os.environ.get("ASSETS_VERSION", "2023_09_23")
-HD_BASE_VERSION = os.environ.get("HD_BASE_VERSION", "2023_09_23")
+ASSETS_VERSION = os.environ.get("ASSETS_VERSION", "2026_02_02")
+HD_BASE_VERSION = os.environ.get("HD_BASE_VERSION", "2026_02_02")
 
 OBJATHOR_ASSETS_BASE_DIR = os.environ.get(
     "OBJATHOR_ASSETS_BASE_DIR", os.path.expanduser(f"/Volumes/DoggyChen/objathor-assets")
@@ -24,12 +24,12 @@ HOLODECK_THOR_ANNOTATIONS_PATH = os.path.join(
     HOLODECK_BASE_DATA_DIR, "thor_object_data", "annotations.json.gz"
 )
 
-if ASSETS_VERSION > "2023_09_23":
+if ASSETS_VERSION > "2030_09_23":
     THOR_COMMIT_ID = "8524eadda94df0ab2dbb2ef5a577e4d37c712897"
 else:
     THOR_COMMIT_ID = "3213d486cd09bcbafce33561997355983bdf8d1a"
 
 # LLM_MODEL_NAME = "gpt-4-1106-preview"
-LLM_MODEL_NAME = "gpt-4o-2024-05-13"
+LLM_MODEL_NAME = "./Qwen3-VL-8B-Instruct"
 
 DEBUGGING = os.environ.get("DEBUGGING", "0").lower() in ["1", "true", "True", "t", "T"]
