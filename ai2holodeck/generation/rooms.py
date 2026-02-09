@@ -12,10 +12,11 @@ import matplotlib.pyplot as plt
 import torch
 from PIL import Image
 from colorama import Fore
-from langchain import PromptTemplate, OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import OpenAI
 from shapely.geometry import LineString, Point, Polygon
 from tqdm import tqdm
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.constants import HOLODECK_BASE_DATA_DIR, DEBUGGING
@@ -48,7 +49,7 @@ class FloorPlanGenerator:
             input=scene["query"], additional_requirements=additional_requirements
         )
         if "raw_floor_plan" not in scene:
-            result = self.llm([HumanMessage(content=floor_plan_prompt)])
+            result = self.llm.invoke([HumanMessage(content=floor_plan_prompt)])
             raw_floor_plan = result.content
             scene["raw_floor_plan"] = raw_floor_plan
         else:

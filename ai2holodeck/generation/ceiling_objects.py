@@ -4,7 +4,9 @@ import re
 import torch
 import torch.nn.functional as F
 from colorama import Fore
-from langchain import PromptTemplate, OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_core.messages import HumanMessage
+from langchain_openai import OpenAI
 from shapely.geometry import Polygon
 
 import ai2holodeck.generation.prompts as prompts
@@ -41,7 +43,7 @@ class CeilingObjectGenerator:
         )
 
         if "raw_ceiling_plan" not in scene:
-            raw_ceiling_plan = self.llm(ceiling_prompt)
+            raw_ceiling_plan = self.llm.invoke([HumanMessage(content=ceiling_prompt)]).content
         else:
             raw_ceiling_plan = scene["raw_ceiling_plan"]
 

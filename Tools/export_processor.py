@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 ASSETS_DIR = "/Volumes/DoggyChen/objathor-assets/2023_09_23/assets"
-JSON_DIR = "./data/scenes/一个很大，有厨房、卧室、客厅和浴室的房子，设计要现代化，家具-2026-02-06-17-24-39-321010/一个很大，有厨房、卧室、客厅和浴室的房子，设计要现代化，家具.json"
+JSON_DIR = "./data/scenes/一个温馨的幼儿园教室，有很多玩具在地上，家具也是软软的，卡通-2026-02-09-16-27-10-839429/一个温馨的幼儿园教室，有很多玩具在地上，家具也是软软的，卡通.json"
 ASSETS_DIR = "/Volumes/DoggyChen/objathor-assets/2023_09_23/assets"
 OUTPUT_DIR = "/Volumes/DoggyChen/GitProjects/GenScene/Assets/Resources/ExportModels"
 from export_model import export_asset

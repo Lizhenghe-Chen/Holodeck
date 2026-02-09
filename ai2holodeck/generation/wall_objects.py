@@ -1,15 +1,16 @@
 import copy
-import multiprocessing
+from concurrent.futures import ThreadPoolExecutor
 import random
 import re
 import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-from langchain import PromptTemplate, OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import OpenAI
 from shapely.geometry import Polygon, box, Point, LineString
 from shapely.ops import substring
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.generation.objaverse_retriever import ObjathorRetriever
 from ai2holodeck.generation.utils import get_bbox_dims
@@ -64,10 +65,10 @@ class WallObjectGenerator:
             )
             for room in scene["rooms"]
         ]
-        pool = multiprocessing.Pool(processes=4)
-        all_placements = pool.map(self.generate_wall_objects_per_room, packed_args)
-        pool.close()
-        pool.join()
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            all_placements = list(
+                executor.map(self.generate_wall_objects_per_room, packed_args)
+            )
 
         for placements in all_placements:
             wall_objects += placements
@@ -113,7 +114,7 @@ class WallObjectGenerator:
         )
         if self.constraint_type == "llm" and use_constraint:
             # constraint_plan = self.llm(constraints_prompt)
-            constraint_plan = self.llm(
+            constraint_plan = self.llm.invoke(
                 [HumanMessage(content=constraints_prompt)]
             ).content
         else:

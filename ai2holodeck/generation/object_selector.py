@@ -1,7 +1,7 @@
 import ast
 import copy
 import json
-import multiprocessing
+from concurrent.futures import ThreadPoolExecutor
 import random
 import re
 import traceback
@@ -10,9 +10,10 @@ from typing import Dict, List
 import torch
 import torch.nn.functional as F
 from colorama import Fore
-from langchain import PromptTemplate, OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import OpenAI
 from shapely import Polygon
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.generation.floor_objects import DFS_Solver_Floor
@@ -61,7 +62,7 @@ class ObjectSelector:
 
         self.random_selection = False
         self.reuse_selection = False
-        self.multiprocessing = True
+        self.multiprocessing = False  # Disabled due to pickling issues with new LangChain
 
     def select_objects(self, scene, additional_requirements="N/A"):
         rooms_types = [room["roomType"] for room in scene["rooms"]]
@@ -125,10 +126,8 @@ class ObjectSelector:
             ]
 
             if self.multiprocessing:
-                pool = multiprocessing.Pool(processes=4)
-                results = pool.map(self.plan_room, packed_args)
-                pool.close()
-                pool.join()
+                with ThreadPoolExecutor(max_workers=4) as executor:
+                    results = list(executor.map(self.plan_room, packed_args))
             else:
                 results = [self.plan_room(args) for args in packed_args]
 
@@ -165,7 +164,7 @@ class ObjectSelector:
         )
 
         # output_1 = self.llm(prompt_1).lower()
-        output_1 = self.llm([HumanMessage(content=prompt_1)]).content.lower()
+        output_1 = self.llm.invoke([HumanMessage(content=prompt_1)]).content.lower()
         plan_1 = self.extract_json(output_1)
 
         if plan_1 is None:
@@ -203,7 +202,7 @@ class ObjectSelector:
                 object_selection_1=output_1,
                 room=room_type,
             )
-            output_2 = self.llm([HumanMessage(content=prompt_2)]).content.lower()
+            output_2 = self.llm.invoke([HumanMessage(content=prompt_2)]).content.lower()
             plan_2 = self.extract_json(output_2)
 
             if plan_2 is None:

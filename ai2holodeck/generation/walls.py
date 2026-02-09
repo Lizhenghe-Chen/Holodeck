@@ -3,10 +3,11 @@ import random
 
 import numpy as np
 from colorama import Fore
-from langchain import PromptTemplate, OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import OpenAI
 from shapely.geometry import LineString, Polygon, Point
 import ai2holodeck.generation.prompts as prompts
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 
 class WallGenerator:
     def __init__(self, llm: OpenAI):
@@ -102,7 +103,7 @@ class WallGenerator:
 
         if "wall_height" not in scene:
             # wall_height = self.llm(wall_height_prompt).split("\n")[0].strip()
-            wall_height= self.llm([HumanMessage(content=wall_height_prompt)]).content.split("\n")[0].strip()
+            wall_height= self.llm.invoke([HumanMessage(content=wall_height_prompt)]).content.split("\n")[0].strip()
             try:
                 wall_height = float(wall_height)
             except:

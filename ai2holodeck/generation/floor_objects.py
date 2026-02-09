@@ -10,11 +10,12 @@ import time
 import editdistance
 import matplotlib.pyplot as plt
 import numpy as np
-from langchain import PromptTemplate, OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import OpenAI
 from rtree import index
 from scipy.interpolate import interp1d
 from shapely.geometry import Polygon, Point, box, LineString
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 
 import ai2holodeck.generation.prompts as prompts
 from ai2holodeck.generation.milp_utils import *
@@ -106,7 +107,7 @@ class FloorObjectGenerator:
 
             if self.constraint_type == "llm":
                 # constraint_plan = self.llm(constraint_prompt)
-                constraint_plan = self.llm([HumanMessage(content=constraint_prompt)]).content
+                constraint_plan = self.llm.invoke([HumanMessage(content=constraint_prompt)]).content
             elif self.constraint_type in ["middle", "edge"]:
                 constraint_plan = ""
                 for object_name in object_names:
@@ -174,7 +175,7 @@ class FloorObjectGenerator:
             all_is_placed = False
             while not all_is_placed:
                 # completion_text = self.llm(baseline_prompt)
-                completion_text = self.llm([HumanMessage(content=baseline_prompt)]).content
+                completion_text = self.llm.invoke([HumanMessage(content=baseline_prompt)]).content
                 try:
                     completion_text = re.findall(
                         r"```(.*?)```", completion_text, re.DOTALL

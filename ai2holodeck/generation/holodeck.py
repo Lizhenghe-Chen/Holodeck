@@ -4,10 +4,9 @@ from typing import Optional, Dict, Any, Tuple
 
 import compress_json
 import open_clip
-from langchain.llms import OpenAI
+from langchain_openai import OpenAI, ChatOpenAI
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
-from langchain.chat_models import ChatOpenAI
 from ai2holodeck.constants import (
     HOLODECK_BASE_DATA_DIR,
     OBJATHOR_VERSIONED_DIR,

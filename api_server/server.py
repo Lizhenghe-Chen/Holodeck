@@ -21,7 +21,7 @@ tasks_status = {}
 class SceneRequest(BaseModel):
     query: str
     add_ceiling: bool = False
-    generate_image: bool = True
+    generate_image: bool = False
     generate_video: bool = False
     use_constraint: bool = True
     use_milp: bool = False
@@ -64,7 +64,10 @@ def generate_scene_worker(
         )
 
         scene = model.get_empty_scene()
-        save_dir = os.path.join(HOLODECK_BASE_DATA_DIR, "scenes")
+        # 使用项目根目录的 data 目录
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        save_dir = os.path.join(project_root, "data", "scenes")
+        os.makedirs(save_dir, exist_ok=True)
 
         _, result_dir = model.generate_scene(
             scene=scene,
@@ -81,13 +84,15 @@ def generate_scene_worker(
         )
 
         # 读取生成的 JSON
-        query_name = query.replace(" ", "_").replace("'", "")[:30]
         json_files = [f for f in os.listdir(result_dir) if f.endswith(".json")]
         if json_files:
-            scene_json = compress_json.load(os.path.join(result_dir, json_files[0]))
+            # 返回相对于data/scenes的文件路径
+            relative_path = os.path.relpath(result_dir, os.path.join(project_root, "data", "scenes"))
+            json_filename = json_files[0]
+            file_path = f"{relative_path}/{json_filename}"
             return {
                 "status": "completed",
-                "scene": scene_json,
+                "file_path": file_path,
                 "output_dir": result_dir,
             }
         else:
@@ -152,36 +157,38 @@ async def get_task_status(task_id: str):
         raise HTTPException(status_code=404, detail="Task not found")
 
     task = tasks_status[task_id]
-    return {
+    response = {
         "task_id": task_id,
         "status": task["status"],
-        "result": task.get("result"),
     }
+    # 如果任务完成，返回文件路径
+    if task["status"] == "completed" and task.get("result"):
+        response["file_path"] = task["result"].get("file_path")
+    elif task["status"] == "failed" and task.get("result"):
+        response["error"] = task["result"].get("error")
+    return response
 
 
-@app.get("/result/{task_id}")
-async def get_scene_result(task_id: str):
-    """获取生成的场景 JSON"""
-    if task_id not in tasks_status:
-        raise HTTPException(status_code=404, detail="Task not found")
-
-    task = tasks_status[task_id]
-
-    if task["status"] != "completed":
-        raise HTTPException(
-            status_code=400,
-            detail=f"Task is {task['status']}, not yet completed",
-        )
-
-    result = task["result"]
-    if "scene" not in result:
-        raise HTTPException(status_code=500, detail="Scene data not available")
-
-    return {
-        "task_id": task_id,
-        "scene": result["scene"],
-        "output_dir": result.get("output_dir"),
-    }
+@app.get("/download/{file_path:path}")
+async def download_scene(file_path: str):
+    """根据文件路径下载场景 JSON 文件"""
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    full_path = os.path.join(project_root, "data", "scenes", file_path)
+    
+    # 安全检查：防止路径遍历攻击
+    full_path = os.path.normpath(full_path)
+    base_path = os.path.normpath(os.path.join(project_root, "data", "scenes"))
+    if not full_path.startswith(base_path):
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    if not os.path.exists(full_path):
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    try:
+        scene_json = compress_json.load(full_path)
+        return scene_json,
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading file: {str(e)}")
 
 
 @app.on_event("shutdown")
