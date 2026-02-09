@@ -21,8 +21,8 @@ parser.add_argument(
     # ),
      # the relative path to the scene json file in current repo
     # default="./data/scenes/a_high_school_building_with_si-2026-01-23-16-22-04-038491/a_high_school_building_with_si.json"
-    # default="./data/scenes/a_living_room-2026-01-23-16-12-22-527091/a_living_room.json"
-    default="./data/scenes/一个只有“table”桌子的房间-2026-02-03-11-52-57-923751/一个只有“table”桌子的房间.json"
+    default="./data/scenes/一个很大，有厨房、卧室、客厅和浴室的房子，设计要现代化，家具-2026-02-06-17-24-39-321010/一个很大，有厨房、卧室、客厅和浴室的房子，设计要现代化，家具.json"
+    # default="./data/scenes/一个有很多植物的房间.json"
 )
 parser.add_argument(
     "--asset_dir",

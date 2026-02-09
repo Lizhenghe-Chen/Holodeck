@@ -3,8 +3,8 @@ from pathlib import Path
 
 ABS_PATH_OF_HOLODECK = os.path.abspath(os.path.dirname(Path(__file__)))
 
-ASSETS_VERSION = os.environ.get("ASSETS_VERSION", "2026_02_02")
-HD_BASE_VERSION = os.environ.get("HD_BASE_VERSION", "2026_02_02")
+ASSETS_VERSION = os.environ.get("ASSETS_VERSION", "2023_09_23")
+HD_BASE_VERSION = os.environ.get("HD_BASE_VERSION", "2023_09_23")
 
 OBJATHOR_ASSETS_BASE_DIR = os.environ.get(
     "OBJATHOR_ASSETS_BASE_DIR", os.path.expanduser(f"/Volumes/DoggyChen/objathor-assets")
